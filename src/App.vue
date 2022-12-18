@@ -2,10 +2,15 @@
   <div id="app">
     <b-row align-h="center">
       <b-col cols="4">
-        <auto-complete v-model="inputValue" :search="searchApi" @submit="submit" maxlength="100" type="text"></auto-complete>
+        <auto-complete
+            v-model="inputValue"
+            :search="searchApi"
+            @submit="submit"
+            maxlength="100"
+            type="text"
+        ></auto-complete>
       </b-col>
     </b-row>
-<!--    <button @click="show" class="mt-4">show parent value</button>-->
   </div>
 </template>
 
@@ -20,14 +25,10 @@ export default {
   },
   data() {
     return {
-      inputValue: '860'
+      inputValue: ''
     }
   },
   methods: {
-    show() {
-      console.log('input value ', this.inputValue)
-      this.inputValue = "8"
-    },
     submit(value) {
       console.log('submited value : ', value)
       this.inputValue = value;
@@ -42,12 +43,26 @@ export default {
               list = list.filter(item => item.toLowerCase().startsWith(value))
               return list
             })
-      }else{
+      } else {
         return []
       }
     },
 
     async search(value) {
+      const list = [{value: '86001', ville: 'Poitiers'},
+        {value: '86700', ville: 'Poitiers'},
+        {value: '868000', ville: 'Poitiers'},
+        {value: '86701', ville: 'Poitiers'},
+        {value: '867012', ville: 'Poitiers'},
+        {value: '867180', ville: 'Poitiers'}]
+
+        if (value.length >= 1)
+          return list.filter((item) => item.value.toLowerCase().startsWith(value.toLowerCase()))
+        return []
+
+    },
+
+    async searchWithSleep(value) {
       const list = ['86001', '86700', '868000', '86701', '867012', '867180']
       console.log("start sleep")
       return this.sleep().then(() => {
