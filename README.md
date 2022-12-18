@@ -1,7 +1,7 @@
 # Auto-complete-vueJs
 Simple autocomplete component using Bootstrap and VueJs
 - Support v-model
-- Support api
+- Support Api
 
 # Available props
 
