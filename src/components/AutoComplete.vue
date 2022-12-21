@@ -178,7 +178,7 @@ section {
   position: absolute;
   width: 100%;
   height: auto;
-  max-height: 200px;
+  max-height: 280px;
   overflow-y: auto;
 }
 
