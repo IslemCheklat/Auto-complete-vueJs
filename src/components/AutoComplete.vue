@@ -21,11 +21,13 @@
 
     <b-list-group v-if="showProposition"
                   class="proposition-group"
+                  ref="propositionGroup"
                   @mouseover="mouseOverlistProposition=true"
                   @mouseleave="mouseOverlistProposition=false">
       <b-list-group-item v-for="(propositionItem, index) in propositionList"
                          :key="index"
                          :class="[{'selected':selectedIndex==index}, 'proposition-item']"
+                         ref="propositionItem"
                          type="button"
                          @click="submitSelectedProposition(index)"
                          v-html="highlight(propositionItem)">
@@ -118,12 +120,23 @@ export default {
       });
     },
     onkeydown() {
-      if (this.selectedIndex < this.propositionList.length - 1)
+      if (this.selectedIndex < this.propositionList.length - 1) {
         this.selectedIndex++;
+        const liHeight =this.$refs.propositionItem[this.selectedIndex].clientHeight
+        if(liHeight*(this.selectedIndex) >= this.$refs.propositionGroup.clientHeight)
+        this.$refs.propositionGroup.scrollTop +=liHeight
+      }else{
+        this.selectedIndex=0;
+        this.$refs.propositionGroup.scrollTop=0;
+      }
     },
     onkeyup() {
-      if (this.selectedIndex > 0)
+      if (this.selectedIndex > 0) {
         this.selectedIndex--;
+        const liHeight =this.$refs.propositionItem[this.selectedIndex].clientHeight
+        if(liHeight*(this.selectedIndex+1) >= this.$refs.propositionGroup.clientHeight)
+          this.$refs.propositionGroup.scrollTop -=liHeight
+      }
     },
     handleBlur() {
       if (!this.mouseOverlistProposition) {
@@ -164,20 +177,27 @@ section {
   box-shadow: 0 2px 2px rgba(0, 0, 0, .16);
   position: absolute;
   width: 100%;
+  height: auto;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .proposition-item {
   border: none;
   text-align: start;
+
 }
 
 .proposition-item:hover {
-  background-color: #F0F0F0;
-
+  /*background-color: #F0F0F0;*/
+  background-color: var(--bs-primary);
+  color: white;
 }
 
 .selected {
-  background-color: #F0F0F0;
+  /*background-color: #F0F0F0;*/
+  background-color: var(--bs-primary);
+  color: white;
 }
 
 .icon-container {
